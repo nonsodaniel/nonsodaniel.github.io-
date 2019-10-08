@@ -36,3 +36,57 @@ if (synth.onvoiceschanged !== undefined) {
 }
 
 
+//speak 
+const speak = () => {
+    //check if speaking
+    if (synth.speaking) {
+        return console.error("Already speaking")
+    }
+    if (textInput !== "") {
+        //get speak text
+        let speakText = new SpeechSynthesisUtterance(textInput.value);
+        //speak  end
+        speakText.onend = e => {
+            console.log("Done speaking")
+        }
+
+        //if theres speak error
+        speakText.onerror = e => {
+            console.lerror("Something went wrong")
+        }
+
+        //selected voice
+        const selectedVoice = voiceSelect.selectedOptions[0].getAttribute('data-name');
+        console.log("Selected", selectedVoice)
+
+        //loop through voices
+        voices.forEach(voice => {
+            if (voice.name === selectedVoice) {
+                speakText.voice = voice;
+            }
+        });
+
+        //set pitch and rate
+        speakText.rate = rate.value;
+        speakText.pitch = pitch.value;
+
+        //speak
+        synth.speak(speakText)
+    }
+}
+
+//EVent listeners
+textForm.addEventListener("submit", e => {
+    e.preventDefault();
+    speak();
+    textInput.getBoundingClientRect()
+})
+
+//set rate and pitch values
+
+rate.addEventListener("change", e => rateValue.textContent = rate.value);
+
+pitch.addEventListener("change", e => pitchValue.textContent = pitch.value);
+
+//voice select change
+voiceSelect.addEventListener("change", e => speak())
