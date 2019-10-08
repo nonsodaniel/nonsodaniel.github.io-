@@ -7,6 +7,7 @@ const voiceSelect = document.querySelector("#voice-select");
 const rateValue = document.querySelector("#rate-value");
 const pitch = document.querySelector("#pitch");
 const pitchValue = document.querySelector("#pitch-value");
+const body = document.querySelector("body")
 
 console.log(synth)
 //init voices array
@@ -38,6 +39,11 @@ if (synth.onvoiceschanged !== undefined) {
 
 //speak 
 const speak = () => {
+
+    //add background image
+    body.style.background = `#141414 url(dist/img/wave.gif)`
+    body.style.backgroundRepeat = 'repeat-x';
+    body.style.backgroundSize = "100% 100%"
     //check if speaking
     if (synth.speaking) {
         return console.error("Already speaking")
@@ -47,7 +53,8 @@ const speak = () => {
         let speakText = new SpeechSynthesisUtterance(textInput.value);
         //speak  end
         speakText.onend = e => {
-            console.log("Done speaking")
+            console.log("Done speaking");
+            body.style.background = ``
         }
 
         //if theres speak error
